@@ -1,0 +1,20 @@
+frontend:
+  image: ghcr.io/kkarka/video-transcriber-frontend
+  tag: frontend-1.1.0
+  replicaCount: 2
+  servicePort: 80
+
+api:
+  image: ghcr.io/kkarka/video-transcriber-api
+  tag: api-1.1.0
+  replicaCount: 2
+  servicePort: 5000
+
+worker:
+  image: ghcr.io/kkarka/video-transcriber-worker
+  tag: worker-1.1.0
+  replicaCount: 1
+
+ingress:
+  host: transcriber.arkadevops.in
+  certificateArn: arn:aws:acm:ap-south-1:894565488699:certificate/ab03ed08-daaf-4e3b-a803-9cfc51b735a0
