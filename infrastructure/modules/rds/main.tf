@@ -21,15 +21,3 @@ resource "aws_db_instance" "postgres" {
   skip_final_snapshot = true
 }
 
-resource "helm_release" "redis" {
-  name       = "redis"
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "redis"
-
-  namespace = "transcriber"
-
-  set {
-    name  = "auth.enabled"
-    value = "false"
-  }
-}

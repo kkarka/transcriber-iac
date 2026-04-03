@@ -107,11 +107,42 @@ resource "helm_release" "redis" {
   name       = "redis"
   repository = "https://charts.bitnami.com/bitnami"
   chart      = "redis"
+  version    = "18.3.2"
 
   namespace = "transcriber"
 
   set {
+    name  = "architecture"
+    value = "standalone"
+  }
+
+  set {
     name  = "auth.enabled"
     value = "false"
+  }
+
+  set {
+    name  = "master.persistence.enabled"
+    value = "false"
+  }
+
+  set {
+    name  = "replica.persistence.enabled"
+    value = "false"
+  }
+
+  set {
+    name  = "replica.replicaCount"
+    value = "0"
+  }
+
+  set {
+    name  = "image.repository"
+    value = "redis"
+  }
+
+  set {
+    name  = "image.tag"
+    value = "7"
   }
 }

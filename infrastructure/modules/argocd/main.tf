@@ -45,7 +45,7 @@ resource "kubernetes_manifest" "transcriber_app" {
           parameters = [
             {
               name  = "env.DATABASE_URL"
-              value = "postgresql://${var.db_user}:${var.db_pass}@${var.db_endpoint}:5432/transcription_db"
+              value = "postgresql://${var.db_user}:${var.db_pass}@${var.db_endpoint}/transcription_db"
             },
             {
               name  = "env.S3_VIDEO_BUCKET_NAME"

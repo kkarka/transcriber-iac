@@ -3,6 +3,7 @@ frontend:
   tag: frontend-1.1.4
   replicaCount: 2
   servicePort: 80
+
 api:
   image: ghcr.io/kkarka/video-transcriber-api
   tag: api-1.1.4
@@ -15,7 +16,7 @@ api:
     limits:
       cpu: "500m"
       memory: "512Mi"
-
+      
 worker:
   image: ghcr.io/kkarka/video-transcriber-worker
   tag: worker-1.1.4
@@ -36,3 +37,6 @@ env:
   DATABASE_URL: ""
   S3_VIDEO_BUCKET_NAME: ""
 
+serviceAccount:
+  create: true
+  name: app-sa
