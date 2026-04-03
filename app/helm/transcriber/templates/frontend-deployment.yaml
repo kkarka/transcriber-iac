@@ -16,4 +16,7 @@ spec:
       containers:
         - name: frontend
           image: "{{ .Values.frontend.image }}:{{ .Values.frontend.tag }}"
-          containerPort: {{ .Values.frontend.port }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.frontend.port }}
+              protocol: TCP

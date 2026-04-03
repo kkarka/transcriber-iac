@@ -6,5 +6,8 @@ metadata:
 spec:
   selector:
     app: frontend
-  ports: {{ .Values.frontend.servicePort }}
-  targetPort: {{ .Values.frontend.port }}
+  ports:
+    - name: http
+      port: {{ .Values.frontend.servicePort }}
+      targetPort: {{ .Values.frontend.port }}
+      protocol: TCP
