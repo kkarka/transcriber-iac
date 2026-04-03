@@ -20,8 +20,8 @@ spec:
     http:
       paths:
         # API ROUTE (FIXED)
-        - path: /api/*
-          pathType: ImplementationSpecific
+        - path: /api
+          pathType: Prefix
           backend:
             service:
               name: api
@@ -29,8 +29,8 @@ spec:
                 number: 5000
 
         # FRONTEND
-        - path: /*
-          pathType: ImplementationSpecific
+        - path: /
+          pathType: Prefix
           backend:
             service:
               name: frontend
