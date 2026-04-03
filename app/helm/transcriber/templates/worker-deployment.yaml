@@ -30,6 +30,12 @@ spec:
 
             - name: REDIS_PORT
               value: "6379"
+            
+            - name: STORAGE_MODE
+              value: "s3"
+            
+            - name: HUGGINGFACE_API_KEY
+              value: "{{ .Values.env.HUGGINGFACE_API_KEY }}"
 
           resources:
             {{- toYaml .Values.worker.resources | nindent 12 }}

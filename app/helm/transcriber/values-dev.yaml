@@ -33,6 +33,7 @@ ingress:
 env:
   DATABASE_URL: ""
   S3_VIDEO_BUCKET_NAME: ""
+  HUGGINGFACE_API_KEY: ""
 serviceAccount:
   create: true
   name: app-sa
