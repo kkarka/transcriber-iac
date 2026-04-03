@@ -39,7 +39,7 @@ spec:
               value: "{{ .Values.env.DATABASE_URL }}"
             - name: S3_VIDEO_BUCKET_NAME
               value: "{{ .Values.env.S3_VIDEO_BUCKET_NAME }}"
-            - name: OPENAI_API_KEY
+            - name: HUGGINGFACE_API_KEY
               value: "{{ .Values.env.OPENAI_API_KEY }}"
           resources:
             {{- toYaml .Values.api.resources | nindent 12 }}
