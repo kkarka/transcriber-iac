@@ -1,11 +1,11 @@
 frontend:
   image: ghcr.io/kkarka/video-transcriber-frontend
-  tag: frontend-1.1.5
+  tag: frontend-189cde4
   replicaCount: 2
   servicePort: 80
 api:
   image: ghcr.io/kkarka/video-transcriber-api
-  tag: api-1.1.5
+  tag: api-189cde4
   replicaCount: 2
   servicePort: 5000
   resources:
@@ -17,7 +17,7 @@ api:
       memory: "512Mi"
 worker:
   image: ghcr.io/kkarka/video-transcriber-worker
-  tag: worker-1.1.5
+  tag: worker-189cde4
   replicaCount: 1
   resources:
     requests:
