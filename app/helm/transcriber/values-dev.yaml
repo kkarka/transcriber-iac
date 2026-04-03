@@ -1,16 +1,16 @@
 frontend:
   image: ghcr.io/kkarka/video-transcriber-frontend
-  tag: frontend-dev-e4259da
+  tag: frontend-52c8543
   replicaCount: 2
   servicePort: 80
 api:
   image: ghcr.io/kkarka/video-transcriber-api
-  tag: api-dev-e4259da
+  tag: api-52c8543
   replicaCount: 2
   servicePort: 5000
 worker:
   image: ghcr.io/kkarka/video-transcriber-worker
-  tag: worker-dev-e4259da
+  tag: worker-52c8543
   replicaCount: 1
 ingress:
   host: transcriber.arkadevops.in
