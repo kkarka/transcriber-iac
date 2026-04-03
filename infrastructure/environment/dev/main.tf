@@ -55,7 +55,7 @@ module "argocd" {
   bucket_name   = module.s3.bucket_name
   irsa_role_arn = module.iam.irsa_role_arn
   certificate_arn = module.acm.certificate_arn
-  openai_api_key = var.openai_api_key
+  huggingface_api_key = var.huggingface_api_key
 }
 
 module "s3" {

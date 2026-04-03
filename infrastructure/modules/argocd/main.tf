@@ -61,7 +61,7 @@ resource "kubernetes_manifest" "transcriber_app" {
             },
             {
               name  = "env.HUGGINGFACE_API_KEY"
-              value = var.openai_api_key
+              value = var.huggingface_api_key
             }
           ]
         }

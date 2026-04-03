@@ -50,6 +50,6 @@ variable "db_pass" {
   sensitive   = true
 }
 
-variable "openai_api_key" {
+variable "huggingface_api_key" {
   sensitive = true
 }
