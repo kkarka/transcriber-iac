@@ -16,13 +16,23 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: {{ .Values.ingress.host }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: frontend
-                port:
-                  number: 80
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+        # API ROUTE
+        - path: /api
+          pathType: Prefix
+          backend:
+            service:
+              name: api
+              port:
+                number: 5000
+
+        # FRONTEND ROUTE
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: frontend
+              port:
+                number: 80
