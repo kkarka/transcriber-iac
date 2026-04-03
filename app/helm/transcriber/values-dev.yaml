@@ -3,8 +3,7 @@ frontend:
   tag: frontend-1.1.6
   replicaCount: 2
   servicePort: 80
-  frontend:
-    port: 8080
+  port: 8080
 api:
   image: ghcr.io/kkarka/video-transcriber-api
   tag: api-1.1.6
