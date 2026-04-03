@@ -19,18 +19,18 @@ spec:
   - host: {{ .Values.ingress.host }}
     http:
       paths:
-        # API ROUTE
-        - path: /api
-          pathType: Prefix
+        # API ROUTE (FIXED)
+        - path: /api/*
+          pathType: ImplementationSpecific
           backend:
             service:
               name: api
               port:
                 number: 5000
 
-        # FRONTEND ROUTE
-        - path: /
-          pathType: Prefix
+        # FRONTEND
+        - path: /*
+          pathType: ImplementationSpecific
           backend:
             service:
               name: frontend
