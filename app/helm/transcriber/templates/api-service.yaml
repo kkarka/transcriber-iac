@@ -8,4 +8,4 @@ spec:
     app: api
   ports:
     - port: 5000
-      targetPort: 5000
+      targetPort: 8000

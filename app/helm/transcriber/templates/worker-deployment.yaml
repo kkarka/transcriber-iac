@@ -31,19 +31,5 @@ spec:
             - name: REDIS_PORT
               value: "6379"
 
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 5000
-            initialDelaySeconds: 30
-            periodSeconds: 10
-
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 5000
-            initialDelaySeconds: 10
-            periodSeconds: 5
-
           resources:
             {{- toYaml .Values.worker.resources | nindent 12 }}

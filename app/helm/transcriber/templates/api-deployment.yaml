@@ -18,20 +18,25 @@ spec:
         - name: api
           image: "{{ .Values.api.image }}:{{ .Values.api.tag }}"
           ports:
-            - containerPort: 5000
+            - containerPort: 8000
           livenessProbe:
             httpGet:
               path: /health
-              port: 5000
+              port: 8000
             initialDelaySeconds: 30
             periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 5
 
           readinessProbe:
             httpGet:
               path: /health
-              port: 5000
-            initialDelaySeconds: 10
+              port: 8000
+            initialDelaySeconds: 15
             periodSeconds: 5
+            timeoutSeconds: 2
+            failureThreshold: 5
+
           env:
             - name: API_URL
               value: "http://api:5000"
