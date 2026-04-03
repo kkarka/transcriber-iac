@@ -8,10 +8,31 @@ api:
   tag: api-1.1.4
   replicaCount: 2
   servicePort: 5000
+  resources:
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+
 worker:
   image: ghcr.io/kkarka/video-transcriber-worker
   tag: worker-1.1.4
   replicaCount: 1
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "512Mi"
+    limits:
+      cpu: "1000m"
+      memory: "1Gi"
+
 ingress:
   host: transcriber.arkadevops.in
-  certificateArn: arn:aws:acm:ap-south-1:894565488699:certificate/ab03ed08-daaf-4e3b-a803-9cfc51b735a0
+  certificateArn: ""
+
+env:
+  DATABASE_URL: ""
+  S3_VIDEO_BUCKET_NAME: ""
+

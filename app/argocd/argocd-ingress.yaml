@@ -1,29 +1,30 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: demo-ingress
-  namespace: transcriber
+  name: argocd-ingress
+  namespace: argocd
+
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
 
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-south-1:894565488699:certificate/ab03ed08-daaf-4e3b-a803-9cfc51b735a0
-
     alb.ingress.kubernetes.io/ssl-redirect: "443"
-    
-    external-dns.alpha.kubernetes.io/hostname: transcriber.arkadevops.in
+
+    external-dns.alpha.kubernetes.io/hostname: argocd.arkadevops.in
 
 spec:
   ingressClassName: alb
+
   rules:
-    - host: transcriber.arkadevops.in
+    - host: argocd.arkadevops.in
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: demo-service
+                name: argocd-server
                 port:
                   number: 80

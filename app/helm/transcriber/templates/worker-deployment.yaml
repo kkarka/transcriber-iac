@@ -13,6 +13,37 @@ spec:
       labels:
         app: worker
     spec:
+      serviceAccountName: {{ include "transcriber.serviceAccountName" . }}
       containers:
         - name: worker
           image: "{{ .Values.worker.image }}:{{ .Values.worker.tag }}"
+
+          env:
+            - name: DATABASE_URL
+              value: "{{ .Values.env.DATABASE_URL }}"
+
+            - name: S3_VIDEO_BUCKET_NAME
+              value: "{{ .Values.env.S3_VIDEO_BUCKET_NAME }}"
+
+            - name: REDIS_HOST
+              value: "redis-master"
+
+            - name: REDIS_PORT
+              value: "6379"
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+
+          resources:
+            {{- toYaml .Values.worker.resources | nindent 12 }}

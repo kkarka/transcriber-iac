@@ -1,0 +1,36 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: transcriber
+  namespace: argocd
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/kkarka/transcriber-iac
+    targetRevision: main
+    path: app/helm/transcriber
+
+    helm:
+      valueFiles:
+        - values-dev.yaml
+      parameters:
+      - name: env.DATABASE_URL
+        value: "{{DB_URL}}"
+      - name: env.S3_VIDEO_BUCKET_NAME
+        value: "{{BUCKET}}"
+      - name: irsaRoleArn
+        value: "{{IRSA_ROLE}}"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: transcriber
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+
+    syncOptions:
+      - CreateNamespace=true
