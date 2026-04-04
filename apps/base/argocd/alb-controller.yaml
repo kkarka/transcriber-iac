@@ -3,6 +3,8 @@ kind: Application
 metadata:
   name: alb-controller
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
 spec:
   project: default
 
@@ -26,7 +28,7 @@ spec:
 
         - name: serviceAccount.name
           value: aws-load-balancer-controller
-          
+
         - name: serviceAccount.annotations.eks\.amazonaws\.com/role-arn
           value: arn:aws:acm:ap-south-1:894565488699:certificate/9c6bea05-cea5-4a95-a966-aeb5498521e1 # REPLACE WITH YOUR ALB CONTROLLER IRSA ROLE ARN
 
