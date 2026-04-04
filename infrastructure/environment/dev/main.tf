@@ -45,18 +45,18 @@ module "acm" {
   zone_id = var.zone_id
 }
 
-module "argocd" {
-  source = "../../modules/argocd"
+# module "argocd" {
+#   source = "../../modules/argocd"
 
-  cluster_name = module.eks.cluster_name
-  db_endpoint   = module.rds.db_endpoint
-  db_user       = var.db_user
-  db_pass       = var.db_pass
-  bucket_name   = module.s3.bucket_name
-  irsa_role_arn = module.iam.irsa_role_arn
-  certificate_arn = module.acm.certificate_arn
-  huggingface_api_key = var.huggingface_api_key
-}
+#   cluster_name = module.eks.cluster_name
+#   db_endpoint   = module.rds.db_endpoint
+#   db_user       = var.db_user
+#   db_pass       = var.db_pass
+#   bucket_name   = module.s3.bucket_name
+#   irsa_role_arn = module.iam.irsa_role_arn
+#   certificate_arn = module.acm.certificate_arn
+#   huggingface_api_key = var.huggingface_api_key
+# }
 
 module "s3" {
   source = "../../modules/s3"
@@ -84,6 +84,20 @@ module "iam" {
   bucket_arn        = module.s3.bucket_arn
 }
 
+
+module "secrets" {
+  source = "../../modules/secrets"
+
+  db_user  = var.db_user
+  db_pass  = var.db_pass
+  db_endpoint = module.rds.db_endpoint
+
+  bucket_name = module.s3.bucket_name
+
+  huggingface_api_key = var.huggingface_api_key
+}
+
+
 resource "aws_security_group" "rds" {
   name   = "${var.project}-rds"
   vpc_id = module.vpc.vpc_id
@@ -92,7 +106,7 @@ resource "aws_security_group" "rds" {
     from_port   = 5432
     to_port     = 5432
     protocol    = "tcp"
-    security_groups = [module.eks.node_security_group_id]
+    security_groups = [aws_security_group.app.id]
   }
 
   egress {
@@ -103,46 +117,75 @@ resource "aws_security_group" "rds" {
   }
 }
 
-resource "helm_release" "redis" {
-  name       = "redis"
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "redis"
-  version    = "18.3.2"
-
-  namespace = "transcriber"
-
-  set {
-    name  = "architecture"
-    value = "standalone"
-  }
-
-  set {
-    name  = "auth.enabled"
-    value = "false"
-  }
-
-  set {
-    name  = "master.persistence.enabled"
-    value = "false"
-  }
-
-  set {
-    name  = "replica.persistence.enabled"
-    value = "false"
-  }
-
-  set {
-    name  = "replica.replicaCount"
-    value = "0"
-  }
-
-  set {
-    name  = "image.repository"
-    value = "redis"
-  }
-
-  set {
-    name  = "image.tag"
-    value = "7"
-  }
+resource "aws_security_group" "app" {
+  name   = "${var.project}-app"
+  vpc_id = module.vpc.vpc_id
 }
+
+resource "aws_ssm_parameter" "cluster_name" {
+  name  = "/transcriber/cluster_name"
+  type  = "String"
+  value = module.eks.cluster_name
+}
+
+resource "aws_ssm_parameter" "vpc_id" {
+  name  = "/transcriber/vpc_id"
+  type  = "String"
+  value = module.vpc.vpc_id
+}
+
+resource "aws_ssm_parameter" "certificate_arn" {
+  name  = "/transcriber/certificate_arn"
+  type  = "String"
+  value = module.acm.certificate_arn
+}
+
+resource "aws_ssm_parameter" "irsa_role_arn" {
+  name  = "/transcriber/irsa_role_arn"
+  type  = "String"
+  value = module.iam.irsa_role_arn
+}
+
+# resource "helm_release" "redis" {
+#   name       = "redis"
+#   repository = "https://charts.bitnami.com/bitnami"
+#   chart      = "redis"
+#   version    = "18.3.2"
+
+#   namespace = "transcriber"
+
+#   set {
+#     name  = "architecture"
+#     value = "standalone"
+#   }
+
+#   set {
+#     name  = "auth.enabled"
+#     value = "false"
+#   }
+
+#   set {
+#     name  = "master.persistence.enabled"
+#     value = "false"
+#   }
+
+#   set {
+#     name  = "replica.persistence.enabled"
+#     value = "false"
+#   }
+
+#   set {
+#     name  = "replica.replicaCount"
+#     value = "0"
+#   }
+
+#   set {
+#     name  = "image.repository"
+#     value = "redis"
+#   }
+
+#   set {
+#     name  = "image.tag"
+#     value = "7"
+#   }
+# }

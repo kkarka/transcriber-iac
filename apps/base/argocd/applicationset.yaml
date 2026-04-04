@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: transcriber-appset
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - env: dev
+
+  template:
+    metadata:
+      name: '{{env}}-transcriber'
+    spec:
+      project: default
+
+      source:
+        repoURL: https://github.com/kkarka/transcriber-iac
+        targetRevision: main
+        path: app/helm/transcriber
+        helm:
+          valueFiles:
+            - values-dev.yaml
+
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: transcriber
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

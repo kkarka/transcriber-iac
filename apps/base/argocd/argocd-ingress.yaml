@@ -3,8 +3,9 @@ kind: Ingress
 metadata:
   name: argocd-ingress
   namespace: argocd
-
   annotations:
+    argocd.argoproj.io/sync-wave: "2"
+
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
 

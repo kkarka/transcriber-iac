@@ -20,3 +20,5 @@ spec:
             - name: http
               containerPort: {{ .Values.frontend.port }}
               protocol: TCP
+          resources:
+            {{- toYaml .Values.frontend.resources | nindent 12 }}

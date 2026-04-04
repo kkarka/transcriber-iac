@@ -4,6 +4,14 @@ frontend:
   replicaCount: 2
   servicePort: 80
   port: 8080
+  resources:
+    requests:
+      cpu: "50m"
+      memory: "64Mi"
+    limits:
+      cpu: "300m"
+      memory: "256Mi"
+
 api:
   image: ghcr.io/kkarka/video-transcriber-api
   tag: api-1.1.13
@@ -16,6 +24,7 @@ api:
     limits:
       cpu: "500m"
       memory: "512Mi"
+
 worker:
   image: ghcr.io/kkarka/video-transcriber-worker
   tag: worker-1.1.13
@@ -27,13 +36,11 @@ worker:
     limits:
       cpu: "1000m"
       memory: "1Gi"
+
 ingress:
   host: transcriber.arkadevops.in
-  certificateArn: ""
-env:
-  DATABASE_URL: ""
-  S3_VIDEO_BUCKET_NAME: ""
-  HUGGINGFACE_API_KEY: ""
+  
 serviceAccount:
   create: true
   name: app-sa
+

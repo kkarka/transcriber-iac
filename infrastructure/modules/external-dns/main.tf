@@ -51,54 +51,54 @@ resource "aws_iam_role_policy_attachment" "external_dns_attach" {
   policy_arn = aws_iam_policy.external_dns.arn
 }
 
-resource "helm_release" "external_dns" {
-  name       = "external-dns"
-  repository = "https://kubernetes-sigs.github.io/external-dns/"
-  chart      = "external-dns"
+# resource "helm_release" "external_dns" {
+#   name       = "external-dns"
+#   repository = "https://kubernetes-sigs.github.io/external-dns/"
+#   chart      = "external-dns"
 
-  namespace = "kube-system"
+#   namespace = "kube-system"
 
-  set {
-    name  = "provider"
-    value = "aws"
-  }
+#   set {
+#     name  = "provider"
+#     value = "aws"
+#   }
 
-  set {
-    name  = "policy"
-    value = "upsert-only"
-  }
+#   set {
+#     name  = "policy"
+#     value = "upsert-only"
+#   }
 
-  set {
-    name  = "registry"
-    value = "txt"
-  }
+#   set {
+#     name  = "registry"
+#     value = "txt"
+#   }
 
-  set {
-    name  = "txtOwnerId"
-    value = var.cluster_name
-  }
+#   set {
+#     name  = "txtOwnerId"
+#     value = var.cluster_name
+#   }
 
-  set {
-    name  = "domainFilters[0]"
-    value = var.domain
-  }
+#   set {
+#     name  = "domainFilters[0]"
+#     value = var.domain
+#   }
 
-  set {
-    name  = "serviceAccount.create"
-    value = "true"
-  }
+#   set {
+#     name  = "serviceAccount.create"
+#     value = "true"
+#   }
 
-  set {
-    name  = "serviceAccount.name"
-    value = "external-dns"
-  }
+#   set {
+#     name  = "serviceAccount.name"
+#     value = "external-dns"
+#   }
 
-  set {
-    name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
-    value = aws_iam_role.external_dns.arn
-  }
+#   set {
+#     name  = "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+#     value = aws_iam_role.external_dns.arn
+#   }
 
-  depends_on = [
-    aws_iam_role_policy_attachment.external_dns_attach
-  ]
-}
+#   depends_on = [
+#     aws_iam_role_policy_attachment.external_dns_attach
+#   ]
+# }

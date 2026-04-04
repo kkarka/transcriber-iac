@@ -1,0 +1,9 @@
+resources:
+  - ../../base/argocd/external-secrets.yaml
+  - ../../base/argocd/cluster-secret-store-ssm.yaml
+  - ../../base/argocd/cluster-secret-store-secrets.yaml
+  - ../../base/argocd/alb-controller.yaml
+  - ../../base/argocd/external-dns.yaml
+  - ../../base/argocd/redis-app.yaml
+  - ../../base/argocd/applicationset.yaml
+  - ../../base/argocd/argocd-ingress.yaml

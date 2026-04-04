@@ -8,31 +8,33 @@ metadata:
     alb.ingress.kubernetes.io/target-type: ip
 
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
-    alb.ingress.kubernetes.io/certificate-arn: {{ .Values.ingress.certificateArn }}
     alb.ingress.kubernetes.io/ssl-redirect: "443"
 
     external-dns.alpha.kubernetes.io/hostname: {{ .Values.ingress.host }}
 
+    {{- $secret := (lookup "v1" "Secret" .Release.Namespace "infra-secrets") }}
+    {{- if $secret }}
+    alb.ingress.kubernetes.io/certificate-arn: {{ $secret.data.CERT_ARN | b64dec | quote }}
+    {{- end }}
+
 spec:
   ingressClassName: alb
   rules:
-  - host: {{ .Values.ingress.host }}
-    http:
-      paths:
-        # API ROUTE (FIXED)
-        - path: /api
-          pathType: Prefix
-          backend:
-            service:
-              name: api
-              port:
-                number: 5000
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: api
+                port:
+                  number: 8000
 
-        # FRONTEND
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: frontend
-              port:
-                number: 80
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  number: 80

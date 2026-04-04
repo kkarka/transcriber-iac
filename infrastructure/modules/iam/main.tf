@@ -27,7 +27,11 @@ resource "aws_iam_policy" "s3" {
     Version = "2012-10-17"
     Statement = [{
       Effect   = "Allow"
-      Action   = ["s3:*"]
+      Action   = [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:ListBucket"
+      ]
       Resource = [
         var.bucket_arn,
         "${var.bucket_arn}/*"
@@ -39,4 +43,25 @@ resource "aws_iam_policy" "s3" {
 resource "aws_iam_role_policy_attachment" "attach" {
   role       = aws_iam_role.irsa.name
   policy_arn = aws_iam_policy.s3.arn
+}
+
+resource "aws_iam_policy" "secrets" {
+  name = "${var.project_name}-secrets"
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [{
+      Effect = "Allow"
+      Action = [
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:DescribeSecret"
+      ]
+      Resource = "*"
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "secrets_attach" {
+  role       = aws_iam_role.irsa.name
+  policy_arn = aws_iam_policy.secrets.arn
 }
