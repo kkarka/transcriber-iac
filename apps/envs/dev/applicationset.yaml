@@ -4,7 +4,7 @@ metadata:
   name: transcriber-appset
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   generators:
     - list:
@@ -20,7 +20,7 @@ spec:
       source:
         repoURL: https://github.com/kkarka/transcriber-iac
         targetRevision: main
-        path: app/helm/transcriber
+        path: apps/charts/transcriber
         helm:
           valueFiles:
             - values-dev.yaml

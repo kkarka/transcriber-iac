@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "-1"
+
+spec:
+  project: default
+
+  source:
+    repoURL: https://kubernetes-sigs.github.io/external-dns/
+    chart: external-dns
+    targetRevision: 1.14.5
+
+    helm:
+      values: |
+        provider: aws
+
+        domainFilters:
+          - arkadevops.in
+
+        policy: upsert-only
+        registry: txt
+        txtOwnerId: transcriber
+
+        serviceAccount:
+          create: false
+          name: external-dns
+          annotations:
+            eks.amazonaws.com/role-arn: arn:aws:iam::894565488699:role/transcriber-external-dns-role
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
