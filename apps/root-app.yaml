@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/kkarka/transcriber-iac
     targetRevision: main
-    path: apps/envs/dev
+    path: apps
 
   destination:
     server: https://kubernetes.default.svc
